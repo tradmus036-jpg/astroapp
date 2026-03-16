@@ -1,0 +1,253 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-gold: var(--gold);
+  --color-silver: var(--silver);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+:root {
+  --background: oklch(0.1 0.03 270);
+  --foreground: oklch(0.93 0.02 270);
+  --card: oklch(0.14 0.04 270);
+  --card-foreground: oklch(0.93 0.02 270);
+  --popover: oklch(0.14 0.04 270);
+  --popover-foreground: oklch(0.93 0.02 270);
+  --primary: oklch(0.78 0.13 55);
+  --primary-foreground: oklch(0.1 0.03 270);
+  --secondary: oklch(0.18 0.05 270);
+  --secondary-foreground: oklch(0.93 0.02 270);
+  --muted: oklch(0.18 0.04 270);
+  --muted-foreground: oklch(0.62 0.05 270);
+  --accent: oklch(0.22 0.07 290);
+  --accent-foreground: oklch(0.93 0.02 270);
+  --destructive: oklch(0.62 0.22 25);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: oklch(0.78 0.13 55);
+  --radius: 0.75rem;
+  --gold: oklch(0.78 0.13 55);
+  --silver: oklch(0.75 0.02 270);
+  --sidebar: oklch(0.12 0.04 270);
+  --sidebar-foreground: oklch(0.93 0.02 270);
+  --sidebar-primary: oklch(0.78 0.13 55);
+  --sidebar-primary-foreground: oklch(0.1 0.03 270);
+  --sidebar-accent: oklch(0.18 0.05 270);
+  --sidebar-accent-foreground: oklch(0.93 0.02 270);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.78 0.13 55);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    color-scheme: dark;
+  }
+  html {
+    @apply font-sans;
+    color-scheme: dark;
+  }
+  select {
+    color-scheme: dark;
+    background-color: #0e0b1e !important;
+    color: inherit;
+  }
+  select option {
+    background-color: #0e0b1e;
+    color: #e2e0f0;
+  }
+}
+
+/* Starfield background */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle var(--duration, 3s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.gold-text {
+  background: linear-gradient(135deg, #d4a843 0%, #f0cc6a 40%, #d4a843 70%, #b8922e 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+.mystic-card {
+  background: linear-gradient(135deg, oklch(0.14 0.05 280 / 0.9), oklch(0.12 0.04 260 / 0.9));
+  border: 1px solid oklch(0.78 0.13 55 / 0.2);
+  backdrop-filter: blur(12px);
+}
+
+.mystic-card:hover {
+  border-color: oklch(0.78 0.13 55 / 0.5);
+  box-shadow: 0 0 24px oklch(0.78 0.13 55 / 0.15);
+}
+
+.glow-gold {
+  box-shadow: 0 0 20px oklch(0.78 0.13 55 / 0.3);
+}
+
+.category-btn {
+  background: linear-gradient(135deg, oklch(0.16 0.06 285 / 0.8), oklch(0.13 0.05 265 / 0.8));
+  border: 1px solid oklch(0.78 0.13 55 / 0.25);
+  transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+  background: linear-gradient(135deg, oklch(0.20 0.08 285 / 0.9), oklch(0.17 0.07 265 / 0.9));
+  border-color: oklch(0.78 0.13 55 / 0.6);
+  box-shadow: 0 0 30px oklch(0.78 0.13 55 / 0.2);
+  transform: translateY(-2px);
+}
+
+.locked-overlay {
+  backdrop-filter: blur(4px);
+  background: oklch(0.1 0.03 270 / 0.6);
+}
+
+/* ── 21st.dev component animations ── */
+
+/* ShimmerButton sweep */
+@keyframes shimmer-sweep {
+  0%   { left: -100%; }
+  60%  { left: 200%; }
+  100% { left: 200%; }
+}
+
+/* Staggered fade-up entrance */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale-in for modal / overlay items */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.93);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Spin for orbital rings */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* BorderBeam travel animations */
+@keyframes beam-x {
+  0%   { left: -80px; width: 80px; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { left: 100%; width: 80px; opacity: 0; }
+}
+@keyframes beam-y {
+  0%   { top: -80px; height: 80px; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; height: 80px; opacity: 0; }
+}
+@keyframes beam-x-rev {
+  0%   { right: -80px; width: 80px; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { right: 100%; width: 80px; opacity: 0; }
+}
+@keyframes beam-y-rev {
+  0%   { bottom: -80px; height: 80px; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { bottom: 100%; height: 80px; opacity: 0; }
+}
+
+/* Aurora drift animations */
+@keyframes aurora-drift-1 {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  50%  { transform: translate(30px, -20px) scale(1.08); }
+  100% { transform: translate(-20px, 15px) scale(0.96); }
+}
+@keyframes aurora-drift-2 {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  50%  { transform: translate(-40px, 25px) scale(1.1); }
+  100% { transform: translate(20px, -15px) scale(0.94); }
+}
+@keyframes aurora-drift-3 {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  50%  { transform: translate(25px, -30px) scale(1.05); }
+  100% { transform: translate(-30px, 20px) scale(1.02); }
+}
+
+/* Fade-up utility classes */
+.animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-scale-in {
+  animation: scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
