@@ -15,6 +15,79 @@ const MONTHS = [
   "July", "August", "September", "October", "November", "December",
 ];
 
+function SelectPicker({
+  value,
+  onChange,
+  options,
+  placeholder,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  options: { label: string; value: string }[];
+  placeholder: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const label = value ? options.find((o) => o.value === value)?.label ?? placeholder : placeholder;
+
+  return (
+    <div ref={ref} className="relative flex-1">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="w-full h-11 px-3 rounded-lg border border-white/10 bg-white/5 text-sm text-left flex items-center justify-between transition-all duration-200 focus:outline-none focus:border-amber-400/60 focus:ring-1 focus:ring-amber-400/20 hover:border-white/20 hover:bg-white/8"
+        style={{ color: value ? "inherit" : "rgba(255,255,255,0.3)" }}
+      >
+        <span>{label}</span>
+        <ChevronDown
+          className={`w-3.5 h-3.5 text-muted-foreground/50 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      {open && (
+        <div
+          className="absolute z-50 mt-1.5 w-full rounded-xl border border-white/10 overflow-hidden shadow-2xl animate-scale-in"
+          style={{ background: "#0d0a1e", backdropFilter: "blur(16px)" }}
+        >
+          <div className="max-h-52 overflow-y-auto">
+            {options.map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => { onChange(opt.value); setOpen(false); }}
+                className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-amber-400/10 hover:text-amber-200 ${
+                  value === opt.value ? "text-amber-300 bg-amber-400/10 font-medium" : "text-foreground"
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const HOURS = Array.from({ length: 24 }, (_, i) => ({
+  value: String(i).padStart(2, "0"),
+  label: String(i).padStart(2, "0"),
+}));
+
+const MINUTES = Array.from({ length: 60 }, (_, i) => ({
+  value: String(i).padStart(2, "0"),
+  label: String(i).padStart(2, "0"),
+}));
+
 function MonthPicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -273,32 +346,24 @@ export function BirthForm({ onResult }: BirthFormProps) {
                 </span>
               </Label>
               <div className="flex items-center gap-2">
-                <Input
-                  type="number"
-                  placeholder="HH"
-                  min={0}
-                  max={23}
+                <SelectPicker
                   value={form.timeOfBirth ? form.timeOfBirth.split(":")[0] : ""}
-                  onChange={(e) => {
-                    const hh = e.target.value.padStart(2, "0");
+                  onChange={(hh) => {
                     const mm = form.timeOfBirth ? form.timeOfBirth.split(":")[1] || "00" : "00";
                     setForm({ ...form, timeOfBirth: `${hh}:${mm}` });
                   }}
-                  className="bg-white/5 border-white/10 focus:border-amber-400/60 focus:ring-amber-400/20 text-foreground placeholder:text-muted-foreground/30 h-11 text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none hover:border-white/20 transition-colors"
+                  options={HOURS}
+                  placeholder="Hour"
                 />
                 <span className="text-muted-foreground/40 text-xl font-light select-none">:</span>
-                <Input
-                  type="number"
-                  placeholder="MM"
-                  min={0}
-                  max={59}
+                <SelectPicker
                   value={form.timeOfBirth ? form.timeOfBirth.split(":")[1] || "" : ""}
-                  onChange={(e) => {
+                  onChange={(mm) => {
                     const hh = form.timeOfBirth ? form.timeOfBirth.split(":")[0] || "00" : "00";
-                    const mm = e.target.value.padStart(2, "0");
                     setForm({ ...form, timeOfBirth: `${hh}:${mm}` });
                   }}
-                  className="bg-white/5 border-white/10 focus:border-amber-400/60 focus:ring-amber-400/20 text-foreground placeholder:text-muted-foreground/30 h-11 text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none hover:border-white/20 transition-colors"
+                  options={MINUTES}
+                  placeholder="Minute"
                 />
               </div>
               {errors.timeOfBirth ? (
